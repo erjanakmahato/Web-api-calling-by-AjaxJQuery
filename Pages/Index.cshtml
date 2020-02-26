@@ -1,0 +1,64 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    //Layout = null;
+}
+
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Test Data from API
+    </div>   <!--en dof panel-heading -->
+    <div class="panel-body">
+        <table class="table table-bordered" id="Table">
+            <tr>
+                <th>Regd No</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone No</th>
+                <th>Admission Date</th>
+            </tr>   <!--end of table-row -->
+        </table>   <!--end of table -->
+    </div> <!--end of Panel-body -->
+</div> <!--end of Panel -->
+<script>
+    $(document).ready(function () {
+        $.ajax
+            ({
+                type: "GET",
+                url: "api/student/",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //alert(JSON.stringify(data));
+                    $("#DIV").html('');
+                    var DIV = '';
+                    $.each(data, function (i, item) {
+                        var rows = "<tr>" +
+                            "<td id='RegdNo'>" + item.regNo + "</td>" +
+                            "<td id='Name'>" + item.name + "</td>" +
+                            "<td id='Address'>" + item.address + "</td>" +
+                            "<td id='PhoneNo'>" + item.phoneNo + "</td>" +
+                            "<td id='AdmissionDate'>" + Date(item.admissionDate,
+                                "dd-MM-yyyy") + "</td>" +
+                            "</tr>";
+                        $('#Table').append(rows);
+                    }); //End of foreach Loop
+                    console.log(data);
+                }, //End of AJAX Success function
+
+                failure: function (data) {
+                    alert(data.responseText);
+                }, //End of AJAX failure function
+                error: function (data) {
+                    alert(data.responseText);
+                } //End of AJAX error function
+
+
+            });
+    });
+</script>  
